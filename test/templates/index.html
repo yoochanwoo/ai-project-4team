@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>과일 선택</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>과일 선택</h1>
+        
+        <nav class="nav-menu">
+            <a href="/" class="active">홈</a>
+            <a href="/history">이력 보기</a>
+        </nav>
+        
+        {% if error %}
+        <div class="error">{{ error }}</div>
+        {% endif %}
+        
+        <form action="/" method="POST">
+            <div class="form-group">
+                <label for="fruit">과일 선택</label>
+                <select id="fruit" name="fruit" required>
+                    <option value="">과일을 선택하세요</option>
+                    <option value="사과">사과</option>
+                    <option value="딸기">딸기</option>
+                    <option value="포도">포도</option>
+                    <option value="복숭아">복숭아</option>
+                    <option value="바나나">바나나</option>
+                    <option value="귤">귤</option>
+                    <option value="수박">수박</option>
+                    <option value="애플망고">애플망고</option>
+                    <option value="무화과">무화과</option>
+                    <option value="용과">용과</option>
+                </select>
+            </div>
+            
+            <button type="submit">선택 완료</button>
+        </form>
+    </div>
+</body>
+</html>

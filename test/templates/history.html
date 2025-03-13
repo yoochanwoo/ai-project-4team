@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>과일 이력</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>과일 데이터</h1>
+
+        <nav class="nav-menu">
+            <a href="/">홈</a>
+        </nav>
+
+        <div class="chart-container">
+            <h2>과일 선택 횟수 (막대 그래프)</h2>
+            <canvas id="fruitBarChart"></canvas>
+        </div>
+
+        <div class="chart-container" style="height: 400px;">
+            <h2>과일 선택 비율 (파이 차트)</h2>
+            <canvas id="fruitPieChart" style="transform: translateY(-30px);"></canvas>
+        </div>
+
+        <script>
+            /*
+            async function fetchChartData() {
+                const response = await fetch("/chart-data");
+                const data = await response.json();
+                return data;
+            }
+            */
+
+            async function renderCharts() {
+                const takeData = "{{chart_data}}"
+                const formatData = takeData.replace(/&#39;/g,'"');
+                const chartData = JSON.parse(formatData);
+                //const chartData = await fetchChartData();
+                //console.log(takeData)
+                //console.log(formatData)
+                //console.log(chartData)
+                const ctxBar = document.getElementById('fruitBarChart').getContext('2d');
+                const ctxPie = document.getElementById('fruitPieChart').getContext('2d');
+
+                // 막대 차트
+                new Chart(ctxBar, {
+                    type: 'bar',
+                    data: {
+                        labels: chartData.labels,
+                        datasets: [{
+                            label: '과일 선택 횟수',
+                            data: chartData.counts,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)',
+                                'rgba(199, 199, 199, 0.2)',
+                                'rgba(83, 102, 255, 0.2)',
+                                'rgba(163, 255, 64, 0.2)',
+                                'rgba(255, 99, 255, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)',
+                                'rgba(199, 199, 199, 1)',
+                                'rgba(83, 102, 255, 1)',
+                                'rgba(163, 255, 64, 1)',
+                                'rgba(255, 99, 255, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false //  범례 숨김
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true // y축 값을 0부터 시작하게(default는 false)
+                            }
+                        }
+                    }
+                });
+
+                // 총 과일 선택 횟수 계산
+                const total = chartData.counts.reduce((sum, value) => sum + value, 0);
+                const percentageData = chartData.counts.map(value => ((value / total) * 100).toFixed(1));
+
+                // 파이 차트
+                new Chart(ctxPie, {
+                    type: 'pie',
+                    data: {
+                        labels: chartData.labels,
+                        datasets: [{
+                            label: '과일 선택 비율 (%)',
+                            data: percentageData,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(54, 162, 235, 0.6)',
+                                'rgba(255, 206, 86, 0.6)',
+                                'rgba(75, 192, 192, 0.6)',
+                                'rgba(153, 102, 255, 0.6)',
+                                'rgba(255, 159, 64, 0.6)',
+                                'rgba(199, 199, 199, 0.6)',
+                                'rgba(83, 102, 255, 0.6)',
+                                'rgba(163, 255, 64, 0.6)',
+                                'rgba(255, 99, 255, 0.6)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        return `${chartData.labels[tooltipItem.dataIndex]}: ${percentageData[tooltipItem.dataIndex]}%`;
+                                    }
+                                }
+                            }
+                        },
+                        layout: {
+                            padding: 40 // 파이를 작게 만들기 위한 여백 추가
+                        }
+                    }
+                });
+            }
+
+            renderCharts();
+        </script>
+
+        <a href="/" class="back-btn">홈으로 돌아가기</a>
+    </div>
+</body>
+</html>

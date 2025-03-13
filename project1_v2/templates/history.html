@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>과일선호조사 이력</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>과일선호조사 이력</h1>
+        
+        <nav class="nav-menu">
+            <a href="/">입력하기</a>
+            <a href="/history" class="active">이력 보기</a>
+        </nav>
+        
+        {% if records %}
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>과일명</th>
+                        <th>성별</th>
+                        <th>나이대</th>
+                        <th>선택개수</th>
+                        <th>비율</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in records %}
+                    <tr>
+                        <td>{{ record.fruit_cd }}</td>
+                        <td>{{ record.gender_cd }}</td>
+                        <td>{{ record.age_cd }}</td>
+                        <td>{{ record.cnt }}</td>
+                        <td>{{ record.ratio }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="no-data">
+                <p>저장된 과일 기록이 없습니다.</p>
+            </div>
+        {% endif %}
+        
+        <a href="/" class="back-btn">입력하기로 돌아가기</a>
+    </div>
+</body>
+</html>

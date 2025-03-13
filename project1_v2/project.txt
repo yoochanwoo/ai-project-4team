@@ -1,0 +1,7 @@
+4조 설문조사 간이 프로젝트
+
+유찬우 : index.html
+권정현 : fruit.py
+김한빈 : history.html
+최효빈 : db.py
+황서영 : app.py

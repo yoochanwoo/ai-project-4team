@@ -1,0 +1,19 @@
+<서버  putty 접속> 
+ip : 192.168.0.97
+port : 22
+id/pwd : dbvision/1234##
+
+<주피터노트북>
+ip : 192.168.0.97:8888
+pwd : 8948864a##
+
+<ftp , 파일질라>
+ip : 192.168.0.97
+port : 21
+id/pwd : dbvision/1234##
+
+<dbeaver 접속>
+Server Host : 192.168.0.97
+Database : survey
+Username : root
+Password: 8948864a

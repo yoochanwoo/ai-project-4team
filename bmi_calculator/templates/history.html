@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI 이력</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>BMI 이력</h1>
+        
+        <nav class="nav-menu">
+            <a href="/">계산하기</a>
+            <a href="/history" class="active">이력 보기</a>
+        </nav>
+        
+        {% if records %}
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>날짜</th>
+                        <th>신장 (cm)</th>
+                        <th>체중 (kg)</th>
+                        <th>BMI</th>
+                        <th>비만도</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for record in records %}
+                    <tr>
+                        <td>{{ record.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>{{ record.height }}</td>
+                        <td>{{ record.weight }}</td>
+                        <td>{{ record.bmi }}</td>
+                        <td class="category">{{ record.category }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="no-data">
+                <p>저장된 BMI 기록이 없습니다.</p>
+            </div>
+        {% endif %}
+        
+        <a href="/" class="back-btn">계산하기로 돌아가기</a>
+    </div>
+</body>
+</html>

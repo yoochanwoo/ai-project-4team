@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>좋아하는 과일</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h1>좋아하는 과일</h1>
+    
+    <nav class="nav-menu">
+        <a href="/history">이력 보기</a>
+    </nav>
+    
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+    
+    <form action="/fruits" method="post">
+        <!-- /calculate : result.html로 매핑되어있는 url -->
+        <div class="form-group">
+            <label for="fruit">설문자 정보</label>
+            {% if ages %}
+                <select id="age" name="age_name">
+                    {% for age in ages %}
+                    <option value="{{ age.id }}">{{ age.name }}</option>
+                    {% endfor %}
+                </select>
+            {% endif %}
+            {% if genders %}
+                <select id="gender" name="gender_name">
+                    {% for gender in genders %}
+                    <option value="{{ gender.id }}">{{ gender.name }}</option>
+                    {% endfor %}
+                </select>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="fruit">좋아하는 과일을 고르세요</label>
+            {% if fruits %}
+                <select id="fruit" name="name">
+                    {% for fruit in fruits %}
+                    <option value="{{ fruit.id }}">{{ fruit.name }}</option>
+                    {% endfor %}
+                </select>
+            {% else %}
+                <div class="no-data">
+                    <p>저장된 과일 기록이 없습니다.</p>
+                </div>
+            {% endif %}
+            <input name="input_name" mask="추가할 과일을 입력하세요." readonly="true">
+        </div>
+        <button type="submit">제출하기</button>
+    </form>
+</div>
+<script>
+    function fnChange(){
+        sel_fruit = document.getElementById("fruit");
+        //alert(sel_fruit.value);
+    }
+</script>
+</body>
+</html>

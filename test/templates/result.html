@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BMI 결과</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>BMI 계산 결과</h1>
+        
+        <nav class="nav-menu">
+            <a href="/">계산하기</a>
+            <a href="/history">이력 보기</a>
+        </nav>
+        
+        <div class="result-box">
+            <p>신장: <strong>{{ height }} cm</strong></p>
+            <p>체중: <strong>{{ weight }} kg</strong></p>
+            <p>BMI 지수: <strong>{{ bmi }}</strong></p>
+            <p>비만도 판정: <strong class="category">{{ category }}</strong></p>
+            <p class="success-message">결과가 데이터베이스에 저장되었습니다.</p>
+        </div>
+        
+        <div class="bmi-info">
+            <h2>BMI 범주 안내</h2>
+            <ul>
+                <li>저체중: 18.5 미만</li>
+                <li>정상: 18.5 - 22.9</li>
+                <li>과체중: 23 - 24.9</li>
+                <li>비만: 25 - 29.9</li>
+                <li>고도비만: 30 이상</li>
+            </ul>
+        </div>
+        
+        <a href="/" class="back-btn">다시 계산하기</a>
+    </div>
+</body>
+</html>

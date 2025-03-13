@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>과일 이력</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>과일 데이터</h1>
+
+        <nav class="nav-menu">
+            <a href="/">홈</a>
+        </nav>
+        <div class="form-group">
+            <label for="viewData">원하는 데이터를 고르세요</label>
+            <select id="viewData" onchange="showChart()">
+                <option>전체</option>
+                <option>성별</option>
+                <option>연령별</option>
+            </select>
+        </div>
+        <div class="chart-container" id="allDataChart">
+            <h2>총 과일 선택 횟수</h2>
+            <canvas id="fruitBarChartByAll"></canvas>
+        </div>
+        <div class="chart-container" id="dataChartByGender">
+            <h2>성별 과일 선택 횟수</h2>
+            <canvas id="fruitBarChartByGender"></canvas>
+        </div>
+        <div class="chart-container" id="dataChartByAge">
+            <h2>연령별 과일 선택 횟수</h2>
+            <canvas id="fruitBarChartByAge"></canvas>
+        </div>
+
+        <div style="height: 50px;">
+        </div>
+
+        <div class="chart-container" style="height: 400px;">
+            <h2>과일 선택 비율</h2>
+            <canvas id="fruitPieChart" style="transform: translateY(-30px);"></canvas>
+        </div>
+
+        <script>
+            const allChartDiv = document.getElementById('allDataChart')
+            const genderChartDiv = document.getElementById('dataChartByGender')
+            genderChartDiv.style.display="none" // 처음엔 안보이게
+            const ageChartDiv = document.getElementById('dataChartByAge')
+            ageChartDiv.style.display="none" // 처음엔 안보이게
+
+            function showChart() {
+                console.log("차트변경")
+                let chooseVal = document.getElementById('viewData').value // 선택한 값
+                console.log(chooseVal)
+
+                if(chooseVal=="전체"){
+                    allChartDiv.style.display="block"
+                    genderChartDiv.style.display="none"
+                    ageChartDiv.style.display="none"
+
+                }else if(chooseVal=="성별"){
+                    allChartDiv.style.display="none"
+                    genderChartDiv.style.display="block"
+                    ageChartDiv.style.display="none"
+
+                }else if(chooseVal=="연령별"){
+                    allChartDiv.style.display="none"
+                    genderChartDiv.style.display="none"
+                    ageChartDiv.style.display="block"
+
+                }
+            }
+
+            async function renderCharts() {
+                const takeData_all = "{{chart_data_all}}"
+                console.log(takeData_all)
+                const formatData_all = takeData_all.replace(/&#39;/g,'"');
+                console.log(formatData_all)
+                const chartData_all = JSON.parse(formatData_all);
+
+                
+                const takeData_man = "{{chart_data_man}}"
+                const formatData_man = takeData_man.replace(/&#39;/g,'"');
+                const chartData_man = JSON.parse(formatData_man);
+
+                
+                const takeData_woman = "{{chart_data_woman}}"
+                const formatData_woman = takeData_woman.replace(/&#39;/g,'"');
+                const chartData_woman = JSON.parse(formatData_woman);
+
+                
+                const takeData_one = "{{chart_data_one}}"
+                const formatData_one = takeData_one.replace(/&#39;/g,'"');
+                const chartData_one = JSON.parse(formatData_one);
+
+                
+                const takeData_two = "{{chart_data_two}}"
+                const formatData_two = takeData_two.replace(/&#39;/g,'"');
+                const chartData_two = JSON.parse(formatData_two);
+
+                
+                const takeData_thr = "{{chart_data_thr}}"
+                const formatData_thr = takeData_thr.replace(/&#39;/g,'"');
+                const chartData_thr = JSON.parse(formatData_thr);
+
+                //const chartData = await fetchChartData();
+                //console.log(takeData)
+                //console.log(formatData)
+                //console.log(chartData)
+                const ctxBarByAll = document.getElementById('fruitBarChartByAll').getContext('2d');
+                const ctxBarByGender = document.getElementById('fruitBarChartByGender').getContext('2d');
+                const ctxBarByAge = document.getElementById('fruitBarChartByAge').getContext('2d');
+                const ctxPie = document.getElementById('fruitPieChart').getContext('2d');
+
+                // 모든 과일 막대 차트
+                new Chart(ctxBarByAll, {
+                    type: 'bar',
+                    data: {
+                        labels: chartData_all.labels,
+                        datasets: [{
+                            label: '과일 선택 횟수',
+                            data: chartData_all.counts,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.2)',
+                                'rgba(54, 162, 235, 0.2)',
+                                'rgba(255, 206, 86, 0.2)',
+                                'rgba(75, 192, 192, 0.2)',
+                                'rgba(153, 102, 255, 0.2)',
+                                'rgba(255, 159, 64, 0.2)',
+                                'rgba(199, 199, 199, 0.2)',
+                                'rgba(83, 102, 255, 0.2)',
+                                'rgba(163, 255, 64, 0.2)',
+                                'rgba(255, 99, 255, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 206, 86, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(153, 102, 255, 1)',
+                                'rgba(255, 159, 64, 1)',
+                                'rgba(199, 199, 199, 1)',
+                                'rgba(83, 102, 255, 1)',
+                                'rgba(163, 255, 64, 1)',
+                                'rgba(255, 99, 255, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: false //  범례 숨김
+                            }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: true // y축 값을 0부터 시작하게(default는 false)
+                            }
+                        }
+                    }
+                });
+
+                // 성별 과일 막대 차트
+                new Chart(ctxBarByGender, {
+                    type: 'bar',
+                    data: {
+                        labels: chartData_all.labels,
+                        datasets: [{
+                            label: '남자들의 과일 선택',
+                            data: chartData_man.counts,
+                            backgroundColor: [
+                                'rgba(54, 162, 235, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(54, 162, 235, 1)'
+                            ],
+                            borderWidth: 1
+                        },{
+                            label: '여자들의 과일 선택',
+                            data: chartData_woman.counts,
+                            backgroundColor: [
+                                'rgba(255, 99, 255, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 255, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true // y축 값을 0부터 시작하게(default는 false)
+                            }
+                        }
+                    }
+                });
+
+                // 모든 과일 막대 차트
+                new Chart(ctxBarByAge, {
+                    type: 'bar',
+                    data: {
+                        labels: chartData_all.labels,
+                        datasets: [{
+                            label: '10 대들의 과일 선택',
+                            data: chartData_one.counts,
+                            backgroundColor: [
+                                'rgba(255, 206, 86, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 206, 86, 1)'
+                            ],
+                            borderWidth: 1
+                        },{
+                            label: '20 대들의 과일 선택',
+                            data: chartData_two.counts,
+                            backgroundColor: [
+                                'rgba(163, 255, 64, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(163, 255, 64, 1)'
+                            ],
+                            borderWidth: 1
+                        },{
+                            label: '30 대들의 과일 선택',
+                            data: chartData_thr.counts,
+                            backgroundColor: [
+                                'rgba(153, 102, 255, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(153, 102, 255, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true // y축 값을 0부터 시작하게(default는 false)
+                            }
+                        }
+                    }
+                });
+
+
+
+                // 총 과일 선택 횟수 계산
+                const total = chartData_all.counts.reduce((sum, value) => sum + value, 0);
+                const percentageData = chartData_all.counts.map(value => ((value / total) * 100).toFixed(1));
+
+                // 파이 차트
+                new Chart(ctxPie, {
+                    type: 'pie',
+                    data: {
+                        labels: chartData_all.labels,
+                        datasets: [{
+                            label: '과일 선택 비율 (%)',
+                            data: percentageData,
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(54, 162, 235, 0.6)',
+                                'rgba(255, 206, 86, 0.6)',
+                                'rgba(75, 192, 192, 0.6)',
+                                'rgba(153, 102, 255, 0.6)',
+                                'rgba(255, 159, 64, 0.6)',
+                                'rgba(199, 199, 199, 0.6)',
+                                'rgba(83, 102, 255, 0.6)',
+                                'rgba(163, 255, 64, 0.6)',
+                                'rgba(255, 99, 255, 0.6)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(tooltipItem) {
+                                        return `${chartData_all.labels[tooltipItem.dataIndex]}: ${percentageData[tooltipItem.dataIndex]}%`;
+                                    }
+                                }
+                            }
+                        },
+                        layout: {
+                            padding: 40 // 파이를 작게 만들기 위한 여백 추가
+                        }
+                    }
+                });
+            }
+
+            renderCharts();
+        </script>
+
+        <a href="/" class="back-btn">홈으로 돌아가기</a>
+    </div>
+</body>
+</html>

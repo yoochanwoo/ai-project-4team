@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>좋아하는 과일</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div class="container">
+    <h1>좋아하는 과일</h1>
+    
+    <nav class="nav-menu">
+        <a href="/history">이력 보기</a>
+    </nav>
+    
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+    
+    <form action="/fruits" method="post">
+        <!-- /calculate : result.html로 매핑되어있는 url -->
+        <div class="form-group">
+            <label for="fruit">좋아하는 과일을 고르세요</label>
+            <select id="fruit" name="name">
+                <option>사과</option>
+                <option>포도</option>
+                <option>딸기</option>
+                    <option>복숭아</option>
+                    <option>바나나</option>
+                    <option>귤</option>
+                    <option>수박</option>
+                    <option>애플망고</option>
+                    <option>무화과</option>
+                    <option>용과</option>
+                </select>
+            </div>
+            <button type="submit">제출하기</button>
+        </form>
+    </div>
+</body>
+</html>
