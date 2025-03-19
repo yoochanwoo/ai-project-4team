@@ -9,7 +9,7 @@ import seaborn as sns
 import joblib # 머신러닝 내용을 저장하고, 재호출시에 사용
 import streamlit as st
 
-# 데이터 준비
+# 데이터 준비:
 hpq_data = pd.read_csv('dataset/glass.csv', encoding='cp949')
 
 X = hpq_data.iloc[:,:-1].values
@@ -80,14 +80,14 @@ plt.rcParams['font.family'] = 'Malgun Gothic'
 plt.rcParams['axes.unicode_minus'] = False
 
 plt.figure(figsize=(10, 6))
-sns.barplot(x='중요도', y='특성', data=feature_importance)
-plt.title('특성 중요도')
-plt.show()
-st.pyplot()
+fig, ax = plt.subplots()
+ax.set_title('특성 중요도')
+sns.barplot(x='중요도', y='특성', data=feature_importance, ax=ax)
+st.pyplot(fig)
 
 # 4. streamlit UI 구현
-st.title("퇴사 여부 예측 시스템 구현")
-st.write('값을 입력하여 퇴사 여부를 예측해보세요.')
+st.title("유리 종류 예측 시스템 구현")
+st.write('값을 입력하여 유리 종류를 예측해보세요.')
 
 # 사용자 입력받기
 point_RI = st.slider('굴절률 (RI)', min_value=1.510, max_value=1.540, value=1.525, step=0.001)
